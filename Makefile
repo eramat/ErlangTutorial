@@ -3,7 +3,6 @@ BASEDIR=`basename $(PWD)`
 DATE=`date '+%a%d%b%y-%H%M'`
 FILE=$(BASEDIR)-$(DATE).tar.bz2
 
-
 all: image dvi pdf
 
 image:
@@ -23,6 +22,7 @@ pdf:
 	pdflatex presentation.tex
 	pdflatex presentation.tex
 	pdflatex presentation.tex
+	(cd tp && make pdf)
 
 clean: cleantex
 	(cd figures-src && make clean)

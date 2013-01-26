@@ -1,0 +1,113 @@
+\documentclass[11pt,a4paper,oneside]{article}
+\usepackage{listings}
+%\usepackage{ucs}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{txfonts}
+\usepackage{lmodern}
+\usepackage[pdftex]{thumbpdf}
+\usepackage[citecolor={purple},linkcolor={blue},urlcolor={blue},
+   a4paper,colorlinks,breaklinks]{hyperref}
+\usepackage{txfonts}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{graphicx}
+
+\graphicspath{{../figures/}}
+
+\renewcommand\familydefault{\sfdefault}
+
+\usepackage{vmargin}
+\setmarginsrb{3.3cm}{2cm}{1cm}{1cm}{1cm}{1cm}{0.5cm}{0.5cm}
+
+%% \usepackage{fullpage}
+\usepackage{color}
+\usepackage{url}
+\usepackage[french]{babel}
+\usepackage{listings}
+
+\author{Eric Ramat\\\url{ramat@lisic.univ-littoral.fr}}
+\title{\textbf{\textbf{TP Introduction à Erlang}}\\
+\emph{Programmation séquentielle}}
+\newcommand{\orangeline}{\rule{\linewidth}{1mm}}
+
+\lstset{language=C++,extendedchars=true,inputencoding=latin1,
+    basicstyle=\ttfamily\small, commentstyle=\ttfamily\color{red},
+      showstringspaces=false,basicstyle=\ttfamily\small}
+
+
+\newcommand{\background}{
+\setlength{\unitlength}{1in}
+\begin{picture}(0,0)
+ \put(-1.4,-7.45){\includegraphics[height=28.7cm]{background1}}
+\end{picture}}
+
+\begin{document}
+\maketitle
+\background
+
+\begin{flushright}
+  Durée : 5 heures\end{flushright}
+
+\noindent\orangeline
+
+L'objectif de ce TP est de comprendre la programation en Erlang en mode
+séquentielle. Nous aborderons les types de base (numériques, liste, tuple et
+record), les fonctions et les modules. Le ``pattern matching'' sera au coeur
+des exercices.
+
+\section{Travail}
+
+\subsection{Etape 1 : }
+
+La génération de code, c'est bien mais maintenant tentons quelque modifications
+de l'application.\\
+
+\textbf{Exercice 1.} Ecrire une fonction
+\textit{inc\_elemnet\_at\_integer\_list}
+qui ajoute 1 à l'ensemble des éléments
+d'une liste d'entiers. On vérifiera que l'élément de la liste est bien un
+entier. Si ce n'est pas le cas alors il sera supprimé de la liste. La fonction
+sera placée dans un module \textit{util}.
+
+Les tests unitaires suivants doivent passer :
+\begin{lstlisting}[language=erlang]
+-module(test).
+-export([]).
+-import(util, [inc_element_at_integer_list/1]).
+
+-include_lib("eunit/include/eunit.hrl").
+
+inc_1_test() ->
+?assertEqual(util:inc_element_at_integer_list([]), []).
+
+inc_2_test() ->
+?assertEqual(util:inc_element_at_integer_list([1,2]), [2,3]).
+
+inc_3_test() ->
+?assertEqual(util:inc_element_at_integer_list([1,a,[x,y,"z"]]), [2]).
+
+inc_4_test() ->
+?assertEqual(util:inc_element_at_integer_list({1,2}), {error, no_list}).
+\end{lstlisting}
+
+L'exécution des tests est réalisé comme suit :
+\begin{lstlisting}[language=bash]
+1> c(test).
+{ok,test}
+2> test:test().
+  All 3 tests passed.
+ok
+\end{lstlisting}
+
+\textbf{Attention !!! La compilation doit être sans aucun warning !}\\
+
+\textbf{Exercice 2.} Ecrire une fonction \textit{insert\_object\_in\_list} qui
+insère un objet définit à l'aide des \textit{records} dans une liste selon
+une politique donnée.
+
+\textbf{Exercice 3.} Proposez les fonctions suivantes applicables sur un arbre
+binaire représenté par des tuples récursifs.
+
+
+\end{document}

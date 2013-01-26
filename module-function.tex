@@ -107,10 +107,43 @@ sum([H|T], N) -> sum(T, H+N).
   \framesubtitle{BIF}
 
   \begin{block}{Définition}
+    Erlang propose un ensemble de fonctions prédéfinies : les BIF
+    (\textit{Built-In Functions})
     \begin{itemize}
-    \item Erlang propose un ensemble de fonctions prédéfinies : les BIF
-      (\textit{Built-In Functions})
+    \item des fonctions d'accès aux éléments d'une liste ou d'un tuple
+    \item des fonctions de conversion
+    \item des fonctions d'entrée/sortie
+    \item \ldots
     \end{itemize}
   \end{block}
+
+  \begin{exampleblock}{Exemple}
+    \begin{columns}
+      \column{0.48\textwidth}
+      \begin{lstlisting}[language=erlang]
+1> List = [one,two,three,four,five].
+[one,two,three,four,five]
+2> hd(List).
+one
+3> tl(List).
+[two,three,four,five]
+4> length(List).
+5
+5> hd(tl(List)).
+two
+      \end{lstlisting}
+      \column{0.48\textwidth}
+      \begin{lstlisting}[language=erlang]
+6> Tuple = {1,2,3,4,5}.
+{1,2,3,4,5}
+7> tuple_size(Tuple).
+5
+8> element(2, Tuple).
+2
+9> setelement(3, Tuple, three).
+{1,2,three,4,5}
+      \end{lstlisting}
+    \end{columns}
+  \end{exampleblock}
 
 \end{frame}

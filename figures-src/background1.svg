@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="background1.svg"
+   version="1.1">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.47"
+     inkscape:cx="390.58713"
+     inkscape:cy="742.29571"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     borderlayer="top"
+     showgrid="true"
+     inkscape:grid-bbox="true"
+     inkscape:grid-points="true"
+     guidetolerance="0.5px"
+     gridtolerance="0.5px"
+     inkscape:window-width="1022"
+     inkscape:window-height="748"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g2186"
+       transform="matrix(0.96875,0,0,0.96875,19.0625,11.04257)">
+      <rect
+         y="1.3621826"
+         x="2"
+         height="1053"
+         width="96"
+         id="rect1307"
+         style="fill:#b6b6b6;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      <text
+         transform="matrix(0,-1.08379,0.922688,0,0,0)"
+         sodipodi:linespacing="100%"
+         id="text2182"
+         y="75.865288"
+         x="-479.21381"
+         style="font-size:74.32257843px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:100%;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           y="75.865288"
+           x="-473.29849"
+           id="tspan2184"
+           sodipodi:role="line"
+           style="font-size:37.16128922px">Introduciton à Erlang : programmation séquentielle </tspan></text>
+    </g>
+  </g>
+</svg>

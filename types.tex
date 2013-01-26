@@ -287,14 +287,43 @@ F = proplists:get_value(f, Dist).
     \begin{itemize}
       \item on peut représenter les classes à l'aide des tuples nommés :
         les \textit{records}
+      \item un \textit{record} peut remplacer un \textit{tuple} afin de
+        mieux qualifier les éléments du tuple : on va associer à chaque
+        élément un nom
     \end{itemize}
   \end{block}
 
   \begin{exampleblock}{Des exemples de classes}
     \begin{lstlisting}[language=erlang]
--record(rectangle,{width, height}).
+-record(rectangle,{width = 0, height = 0}).
 R = #rectangle{width=10, height=20}.
 Width = R#rectangle.width.
+    \end{lstlisting}
+  \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Types}
+  \framesubtitle{Classe et objet}
+
+  \begin{alertblock}{}
+    \begin{itemize}
+    \item un \textit{record} et ses ``méthodes'' doivent être définis dans un
+      module
+    \item il est inutile de préfixer le nom du \textit{record} par le nom
+      du module
+    \item lors de la définition d'un \textit{record}, il n'est pas nécessaire de
+      fixer des valeurs par défaut aux attributs
+    \end{itemize}
+  \end{alertblock}
+
+  \begin{exampleblock}{Copie de \textit{record}}
+    On peut instantier un \textit{record} à partir d'un \textit{record}
+    instantié et modifier l'état du nouvel \textit{record]
+    \begin{lstlisting}[language=erlang]
+R = #rectangle{width=10, height=20}.
+R2 = R#rectangle{height=30}.
     \end{lstlisting}
   \end{exampleblock}
 
