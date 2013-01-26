@@ -1,0 +1,68 @@
+\section{Introduction}
+
+\begin{frame}
+  \frametitle{Introduction}
+
+  \begin{block}{Histoire}
+    \begin{itemize}
+      \item créé en 1986 par Ericsson (acteur de l'industrie des
+        télécommunications)
+      \item libre depuis 1998
+      \item le livre de référence ``Programming Erlang: Software for a
+        concurrent world'' de Joe Armstrong en 2007
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Philosophie}
+    \begin{itemize}
+      \item langage simple et épuré
+      \item gestion de la concurrence très légère
+      \item pas d'état partagé entre les process (pas de ``lock'', pas de mutex,
+        \ldots)
+      \item passage de messages asynchrones
+      \item les processus doivent être en mesure de s'exécuter tout le temps
+    \end{itemize}
+  \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Introduction}
+
+  \begin{block}{Caractéristiques du langage}
+    \begin{itemize}
+      \item fonctionnel
+      \item typage fort et dynamique
+      \item pas d'état partagé ! pas de variable mutable
+      \item basé sur le ``pattern matching''
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Introduction}
+
+  \begin{block}{Le shell}
+    \begin{itemize}
+      \item l'outil central : la console erlang
+      \item le shell est un interpréteur de commandes / d'instructions
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Le shell}
+    \begin{lstlisting}[language=bash]
+$ erl
+Erlang R15B01 (erts-5.9.1) [source] [smp:2:2] [async-threads:0]
+                           [kernel-poll:false]
+
+Eshell V5.9.1  (abort with ^G)
+1>
+    \end{lstlisting}
+  \end{exampleblock}
+
+  \begin{alertblock}{}
+    Pour quitter le shell, <ctrl> + g puis q
+  \end{alertblock}
+
+\end{frame}

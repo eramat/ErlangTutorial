@@ -1,0 +1,103 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[sans, mathsans, professionalfonts, compress, smaller, table,
+               xcolor=pdftex, dvipsnames]{beamer}
+\usepackage[frenchb]{babel}
+\usepackage{pgfpages}
+%\pgfpagesuselayout{4 on 1}[a4paper,landscape,border shrink=9mm]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{colortbl}
+\usepackage{pgf}
+\usepackage{pgfnodes}
+\usepackage{tikz}
+\usetikzlibrary{snakes,arrows,shapes,automata}
+\graphicspath{{figures/}}
+\usepackage[final]{listings}
+\usepackage{amsmath,amssymb}
+\usepackage{array,multirow}
+\usepackage{arydshln}
+\usefonttheme{structurebold}
+\usetheme{Boadilla}
+\usecolortheme{seahorse}
+
+\usepackage{listings}
+
+\lstset{language=java,extendedchars=true,inputencoding=latin9,
+numbers=none, numberstyle=\tiny\sl, stepnumber=1, numbersep=5pt,
+basicstyle=\ttfamily\scriptsize, commentstyle=\ttfamily\color{red}}
+
+\DeclareGraphicsRule{*}{mps}{*}{}
+
+\title[Erlang]{Introduction à Erlang}
+\subtitle{}
+\author[E. Ramat]{E. RAMAT}
+\institute[ULCO]{Université du Littoral - Côte d'Opale}
+\subject{}
+\date{\today}
+\titlegraphic{
+\includegraphics[width=3cm]{LogoLISIC}
+\hspace{1cm}
+\includegraphics[width=3cm]{LogoULCO}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Animation des sections
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\AtBeginSection[] {
+\begin{frame}<beamer>
+  \frametitle{Plan}
+  \tableofcontents[currentsection]
+\end{frame}
+}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\section*{Présentation du module}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Déroulement du module}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \begin{itemize}
+  \item 3h de cours
+  \item 9h de TP
+  \item \textbf{chaque séance} de tp :
+    \begin{itemize}
+    \item un compte rendu en fin de séance
+    \item une note\\~
+    \end{itemize}
+  \item note du module = ${\frac{1}{2}}$ (examen + moyenne des notes TP)
+  \end{itemize}
+\end{frame}
+
+\section*{Sommaire}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Sommaire}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tableofcontents
+\end{frame}
+
+\include{introduction}
+
+\include{types}
+
+\include{module-function}
+
+\include{matching}
+
+\include{condition}
+
+\include{concurrent}
+
+\include{copyright}
+
+\end{document}

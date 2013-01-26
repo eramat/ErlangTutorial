@@ -1,0 +1,319 @@
+\section{Variable et types}
+
+\begin{frame}[fragile]
+  \frametitle{Variable}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+    \item les variables permettent de stocker des valeurs (des littéraux)
+    \item le nom des variables commencent toujours par une majuscule
+    \item une variable est ``affectée'' une seule fois !
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Exemple}
+    \begin{lstlisting}[language=erlang]
+1> X = 12.
+12
+2> X.
+12
+3> X = 13.
+** exception error: no match of right hand side value 13
+    \end{lstlisting}
+  \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Types}
+  \framesubtitle{Introduction}
+
+  \begin{block}{Les types basiques}
+    \begin{itemize}
+    \item les entiers
+    \item les réels
+    \item les atomes
+    \item les tuples
+    \item les listes
+    \end{itemize}
+  \end{block}
+
+  \begin{alertblock}{Ce ne sont pas des types !}
+    \begin{itemize}
+    \item les booléens
+    \item les chaînes de caractères
+    \item les dictionnaires (ou tables de hâchage)
+    \item les classes et les objets
+    \end{itemize}
+  \end{alertblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Types}
+  \framesubtitle{Entier}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+    \item aucune taille limite \ldots sauf celle de la mémoire
+    \item par défaut, les entiers sont exprimés en base 10
+    \item possibilité de définir un entier dans une base comprise entre
+      2 et 16 : \textit{Base\#Value}
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Des exemples d'entiers}
+    \begin{lstlisting}[language=erlang]
+Int = 1234567890.
+Bin = 2#00110110.
+Hex = 16#FFA68BA.
+    \end{lstlisting}
+  \end{exampleblock}
+
+  \begin{alertblock}{}
+    Le point suivi d'un espace ou d'un saut de ligne marque la fin d'une
+    expression.
+  \end{alertblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Types}
+  \framesubtitle{Réel}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+    \item présentation 64 bits
+    \item un numérique est un réel s'il contient un point
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Des exemples de réels}
+    \begin{lstlisting}[language=erlang]
+X = 1.767458.
+Y = -5.657e+8.
+    \end{lstlisting}
+  \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Types}
+  \framesubtitle{Atome}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+    \item ce n'est pas une constante numérique
+    \item un atome est un littéral, une constante dont la valeur est le nom
+    \item un atome commence par une lettre minuscule suivie par des lettres
+      minuscules ou majuscules ou des chiffres ou un ``\_'' ou un ``@''
+    \item un atome peut aussi être une suite de caracètres délimitée par
+      des quotes simples
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Des exemples d'atomes}
+    \begin{lstlisting}[language=erlang]
+A = error.
+B = ok.
+C = toto@abc.com.
+D = 'erlang, c'est chouette !'.
+    \end{lstlisting}
+  \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Types}
+  \framesubtitle{Tuple}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+    \item un ensemble de taille fixe d'éléments
+    \item utilisé comme une sorte de structure à la C/C++
+   \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Des exemples de tuples}
+    \begin{lstlisting}[language=erlang]
+Tup = { range, 1, 100 }.
+Err = { error, format_error, ``Syntax error in line 60'' }.
+Pet = { animal, { nom, ``Titus''}, { type, chien} }
+    \end{lstlisting}
+  \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Types}
+  \framesubtitle{Liste}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+      \item un ensemble de taille variable d'éléments
+      \item potentiellement hétérogène
+      \item il existe une bibliothèque de fonctions : foreach, map, filter,
+        sort, \ldots
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Des exemples de listes}
+    \begin{lstlisting}[language=erlang]
+L = [ 1, 2, 3, 4, 5, 6 ].
+L2 = [ X, Y, { toto, titi }, 3.7 ].
+    \end{lstlisting}
+  \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Types}
+  \framesubtitle{Liste}
+
+  \begin{block}{Manipulation}
+    \begin{itemize}
+    \item accès au premier élément de la liste et aux suivants
+      \begin{lstlisting}[language=erlang]
+1> L = [ 1, 2, 3, 4, 5, 6 ].
+2> [H|T] = L.
+3> H.
+[1]
+4> T.
+[2,3,4,5,6]
+      \end{lstlisting}
+    \item application d'une expression ou fonction sur les éléments d'une
+      liste : forme générateur
+      \begin{lstlisting}[language=erlang]
+1> L = [ 1, 2, 3, 4, 5, 6 ].
+[1,2,3,4,5,6]
+2> [ 2 * X || X <- L ].
+[2,4,6,8,10,12]
+      \end{lstlisting}
+    \item forme filtrage : seuls les termes s'unifiant avec le pattern sera
+      utilisé dans la partie fonction
+      \begin{lstlisting}[language=erlang]
+1> [ X || {a, X} <- [{a,1},{b,2},{c,3},{a,4},hello,"wow"]].
+[1,4]
+      \end{lstlisting}
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Types}
+  \framesubtitle{Booléen}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+      \item les booléens sont un cas partculier d'atomes
+    \end{itemize}
+    \begin{lstlisting}[language=erlang]
+T = true.
+F = false.
+    \end{lstlisting}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Types}
+  \framesubtitle{Chaîne de caractères}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+      \item une chaîne de caractères est une liste d'entiers compris entre 0
+        et 255 (code ASCII)
+      \item délimitée par des double-quotes
+      \item possibilité de définition directement sous forme d'une liste
+      \item support de l'unicode
+      \item deux fonctions d'affichage du type printf avec formatage :
+        \texttt{io:format} et \texttt{io\_lib:format}
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Types}
+  \framesubtitle{Chaîne de caractères}
+
+  \begin{exampleblock}{Des exemples de chaînes de caractères}
+    \begin{lstlisting}[language=erlang]
+Str = "Hello world!".
+Str = [72, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100, 33].
+io:format("Hello, ~s.~n'', ["Bob"]).
+    \end{lstlisting}
+  \end{exampleblock}
+
+  \begin{alertblock}{io::format}
+    \begin{itemize}
+    \item ~n : retour à la ligne
+    \item ~s : remplacé par une chaîne de caractères
+    \end{itemize}
+  \end{alertblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Types}
+  \framesubtitle{Dictionnaire}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+      \item utilisation du module \texttt{proplists} (\textit{property list}
+        - liste de propriétés)
+      \item un dictionnaire est représenté par une liste de tuples à deux
+        éléments
+      \item possibilité d'utilisation un autre module, \textit{dict},
+        plus complet
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Des exemples de dicitonnaires}
+    \begin{lstlisting}[language=erlang]
+Dict = [ {a, 10}, {f, 24}, {z, -6} ].
+F = proplists:get_value(f, Dist).
+    \end{lstlisting}
+  \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Types}
+  \framesubtitle{Classe et objet}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+      \item on peut représenter les classes à l'aide des tuples nommés :
+        les \textit{records}
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Des exemples de classes}
+    \begin{lstlisting}[language=erlang]
+-record(rectangle,{width, height}).
+R = #rectangle{width=10, height=20}.
+Width = R#rectangle.width.
+    \end{lstlisting}
+  \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Types}
+
+  \begin{block}{Test}
+    Il existe une série de fonctions prédéfinie pour tester le type des
+    variables :
+    \begin{itemize}
+      \item number(X) : X est un nombre
+      \item integer(X) : X est un entier
+      \item float(X) : X est une réel
+      \item atom(X) : X est un atome
+      \item tuple(X) : X est un tuple
+      \item list(X) : X est une liste
+    \end{itemize}
+  \end{block}
+
+\end{frame}

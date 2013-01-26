@@ -1,0 +1,156 @@
+\section{Conditionnel}
+
+\begin{frame}
+  \frametitle{Conditionnel}
+  \framesubtitle{Introduction}
+
+  \begin{block}{Guard/if/case}
+    \begin{itemize}
+    \item il existe plusieurs formes de conditions
+    \item les ``guards'' (gardes) qui permettent d'augmenter l'expressivité
+      des ``patterns''
+    \item les ``if'' qui est une sorte de systèmes de ``guards'' en cascade
+    \item les ``case'': très similaire au ``case'' des langages classiques
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Conditionnel}
+  \framesubtitle{Guard}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+    \item le ``pattern'' est utilisé si la ``guard'' est validée
+    \item la ``guard'' est une fonction booléenne dépendante des arguments
+      du pattern
+    \item l'instruction \textit{when} permet d'exprimer la condition
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Exemple}
+    \begin{lstlisting}[language=erlang]
+max(X, Y) when X > Y -> X;
+max(X, Y) -> Y.
+    \end{lstlisting}
+  \end{exampleblock}
+
+  \begin{alertblock}{Explications}
+    \begin{itemize}
+    \item le premier ``pattern'' est utilisé si $X > Y$
+    \item sinon c'est le deuxième qui sert à l'unification
+    \item les ``patterns'' sont pris dans l'ordre donc attention à l'ordre et
+      au recouvrement des conditions
+    \end{itemize}
+  \end{alertblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Conditionnel}
+  \framesubtitle{If}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+    \item le ``If'' est une séquence de conditions
+    \item dès que l'une est vérifiée, on applique le membre droit
+    \item la séquence se termine souvent par \textit{true}
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Exemple}
+    \begin{lstlisting}[language=erlang]
+if
+    X > Y -> "X est plus grand que Y";
+    true -> "X est plus petit ou égal à Y"
+end.
+    \end{lstlisting}
+  \end{exampleblock}
+
+  \begin{alertblock}{Explications}
+    \begin{itemize}
+    \item si $X > Y$ alors la chaîne de caratères "X est plus grand que Y"
+      est produite
+    \item si la première condition n'est pas vérifiée, on applique
+      obligatoirement la seconde
+    \end{itemize}
+  \end{alertblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Conditionnel}
+  \framesubtitle{Case}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+    \item en fonction de la valeur d'une expression, on active l'une ou l'autre
+      des expressions
+    \item la valeur est comparée à un ``pattern''
+    \item les patterns peuvent être conditionnés par des ``guards''
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Syntaxe}
+    \begin{lstlisting}[language=erlang]
+case Expression of
+    Pattern1 [when Guard1] -> Expr_seq1;
+    Pattern2 [when Guard2] -> Expr_seq2;
+    ...
+end
+    \end{lstlisting}
+  \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Conditionnel}
+  \framesubtitle{Case}
+
+  \begin{exampleblock}{Exemple}
+    \begin{lstlisting}[language=erlang]
+filter(P, [H|T]) ->
+   case P(H) of
+      true -> [H|filter(P, T)];
+      false -> filter(P, T)
+   end;
+filter(P, []) -> [].
+    \end{lstlisting}
+  \end{exampleblock}
+
+  \begin{alertblock}{Explications}
+    \begin{itemize}
+    \item la fonction \textit{filter} construit une liste à partir des éléments
+      d'une autre liste qui vérifient une condition
+    \item en fonction de P(H), P étant une fonction, on ajoute l'élément de la
+      liste (qui est en tête) ou non
+    \end{itemize}
+  \end{alertblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Conditionnel}
+  \framesubtitle{Case}
+
+  \begin{exampleblock}{Exemple d'utilisation}
+    \begin{lstlisting}[language=erlang]
+1> P = fun(X) -> X rem 2 == 0 end.
+#Fun<erl_eval.6.82930912>
+2> filter:filter(P, [1,2,3,4,5,6]).
+[2,4,6]
+    \end{lstlisting}
+  \end{exampleblock}
+
+  \begin{alertblock}{Explications}
+    \begin{itemize}
+    \item on définit une fonction qui vérifie que X est pair
+    \item l'opérateur arithmétique \textit{rem} permet d'obtenir le reste
+      de la division entière
+    \item la fonction \textit{filter} est placée dans un module \textit{filter}
+      d'où l'appel filter:filter
+    \end{itemize}
+  \end{alertblock}
+
+\end{frame}

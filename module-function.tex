@@ -1,0 +1,116 @@
+\section{Module et fonction}
+
+\begin{frame}[fragile]
+  \frametitle{Module}
+
+  \begin{block}{Défintion}
+    \begin{itemize}
+    \item un module est l'unité de base du code
+    \item les fonctions doivent être définies dans un module
+    \item un module est un fichier .erl
+    \item un module compilé donne naissance à un fichier .beam
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Exemple}
+    \begin{lstlisting}[language=erlang]
+-module(geometry).
+-export([area/1]).
+area({rectangle, Width, Height}) -> Width * Height;
+area({circle, Radius}) -> 3.14159 * Radius * Radius.
+    \end{lstlisting}
+  \end{exampleblock}
+
+  \begin{alertblock}{Explications}
+    \begin{itemize}
+    \item le module se nomme \textit{geometry}
+    \item la fonction \textit{area} est utilisable à l'extérieur du module
+    \end{itemize}
+  \end{alertblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Module}
+
+  \begin{block}{Utilisation d'un module}
+    \begin{itemize}
+    \item après une phase de compilation :
+      \begin{lstlisting}[language=erlang]
+1> c(geometry).
+{ok,geometry}
+      \end{lstlisting}
+    \item on peut ``invoquer'' les fonctions
+      \begin{lstlisting}[language=erlang]
+2> geometry:area({rectangle, 10, 5}).
+50
+3> geometry:area({circle, 1.4}).
+6.15752
+      \end{lstlisting}
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Fonction}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+    \item deux types de fonction : nommée et anonyme
+    \item une fonction est définie par son nom et son arité (nombre de
+      paramètres)
+    \item deux fonctions de même nom et d'arité différent sont des fonctions
+      différentes
+    \item par convention, les fonctions de même nom et d'arité différent sont
+      des fonctions auxiliaires
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Exemple}
+    \begin{lstlisting}[language=erlang]
+sum(L) -> sum(L, 0).
+sum([], N) -> N;
+sum([H|T], N) -> sum(T, H+N).
+    \end{lstlisting}
+  \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Fonction}
+  \framesubtitle{Fonction anonyme}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+    \item une fonction anonyme est une fonction sans nom
+    \item en général, utilisée au sein d'une expression
+    \item on manipule la fonction via des variables (une sorte de pointeur
+      de fonction)
+    \item l'invocation de la fonction est possible via les variables
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Exemple}
+    \begin{lstlisting}[language=erlang]
+1> Z = fun(X) -> 2*X end.
+#Fun<erl_eval.6.82930912>
+2> Z(2).
+4
+   \end{lstlisting}
+  \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Fonction}
+  \framesubtitle{BIF}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+    \item Erlang propose un ensemble de fonctions prédéfinies : les BIF
+      (\textit{Built-In Functions})
+    \end{itemize}
+  \end{block}
+
+\end{frame}

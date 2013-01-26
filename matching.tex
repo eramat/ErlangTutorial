@@ -1,0 +1,164 @@
+\section{``Pattern matching''}
+
+\begin{frame}[fragile]
+  \frametitle{``Pattern matching''}
+  \framesubtitle{Introduction}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+      \item ``Pattern matching'' = filtrage par motif
+      \item recherche de la présence de constituants d'un motif
+      \item l'opérateur de ``Pattern marching'' est l'opérateur =
+      \item le mécanisme est aussi actif lors de l'appel à des fonctions
+      \item en Prolog, on parle d'unification
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{``Pattern matching''}
+
+  \begin{exampleblock}{Exemple}
+    \begin{lstlisting}[language=erlang]
+1> X.
+* 1: variable 'X' is unbound
+2> X = 2.
+2
+3> {X, Y} = {1, 2}.
+** exception error: no match of right hand side value {1,2}
+4> {X, Y} = {2, 3}.
+{2,3}
+5> Y.
+3
+    \end{lstlisting}
+  \end{exampleblock}
+
+  \begin{alertblock}{Explications}
+    \begin{itemize}
+    \item 1> la variable X n'est pas liée à une valeur
+    \item 2> la variable X est liée à la valeur 2
+    \item 3> on cherche à lier le tuple {X,Y} à {1,2} or X a déjà été liée à
+      2 donc il ne peut plus être lié à une autre valeur (1)
+    \item 4> cette fois, on cherche à lier {X,Y} à {2,3} ; X étant déjà lié à 2,
+      Y peut être lié à 3
+    \end{itemize}
+  \end{alertblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{``Pattern matching''}
+  \framesubtitle{Liste}
+
+  \begin{exampleblock}{Exemple}
+    \begin{lstlisting}[language=erlang]
+1> L = [1, 2, 3, 4, 5].
+[1,2,3,4,5]
+2> [H|T]=L.
+[1,2,3,4,5]
+3> H.
+1
+4> T.
+[2,3,4,5]
+    \end{lstlisting}
+  \end{exampleblock}
+
+  \begin{alertblock}{Explications}
+    \begin{itemize}
+    \item 1> L est liée à une liste de 5 entiers
+    \item 2> la notion [H|T] désigne le premier élément de la liste par H
+      (``head'') et les éléments suivants par T (``tail'')
+    \item cette technique permet d'accèder aux éléments d'une liste
+    \end{itemize}
+  \end{alertblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{``Pattern matching''}
+  \framesubtitle{Fonctions}
+
+  \begin{block}{Exemple}
+    On n'invoque pas une fonction, on cherche :
+    \begin{itemize}
+    \item à se lier à une fonction
+    \item à lier les paramètres d'appel via les fonctions
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Exemple}
+    \begin{lstlisting}[language=erlang]
+sum(L) -> sum(L, 0).
+
+sum([], N)- > N;
+sum([H|T], N) -> sum(T, H+N).
+    \end{lstlisting}
+  \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{``Pattern matching''}
+  \framesubtitle{Fonctions}
+
+  \begin{alertblock}{Explications}
+    \begin{itemize}
+    \item on cherche une fonction \textit{sum} d'arité 1 et le paramètre est
+      instantié avec une liste totalement instantiée
+      \begin{lstlisting}[language=erlang]
+sum([1, 2, 3]).
+      \end{lstlisting}
+    \item la fonction \textit{sum} d'arité 1 appelle la fonction \textit{sum}
+      d'atité 2 dont le deuxième paramètre va nous servir d'accumulateur pour
+      la somme
+      \begin{lstlisting}[language=erlang]
+sum([1, 2, 3], 0).
+      \end{lstlisting}
+    \item deux expressions de la fonction \textit{sum/2} sont possibles mais
+      comme la liste n'est pas vide, on se lie avec la deuxième forme
+      \begin{lstlisting}[language=erlang]
+sum([1 | [2, 3], 0).
+sum([2 | [3]], 1).
+sum([3 | []], 3).
+sum([], 6).
+      \end{lstlisting}
+    \item récursivement, à chaque appel, ``on retire'' un élément de la liste
+      donc on finira par se lier à la première forme de la fonction
+      \textit{sum/2}
+    \end{itemize}
+  \end{alertblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{``Pattern matching''}
+  \framesubtitle{Fonctions}
+
+  \begin{block}{Syntaxe}
+    \begin{itemize}
+    \item une fonction de même nom et de même arité peut possèder de multiples
+      définitions
+    \item chaque définition est terminée par un point virgule
+    \item la dernière définition se termine par un point
+    \end{itemize}
+  \end{block}
+
+  \begin{alertblock}{``Peu importe''}
+    \begin{itemize}
+    \item lors de la définition des ``patterns'' possibles d'une fonction,
+      on a besoin d'ignorer certains paramètres
+    \item le symbole ``\_'' permet de dire quelque soit la valeur du paramètre
+    \item ``\_'' permet être aussi utilisé dans une expression pour
+      indiquer que l'on ne précise par ce paramètre
+    \end{itemize}
+  \end{alertblock}
+
+  \begin{exampleblock}{Exemple}
+    \begin{lstlisting}[language=erlang]
+IsFruit(orange) -> true; IsFruit(cerise) -> true; IsFruit(pomme) -> true;
+IsFruit(_) -> false.
+    \end{lstlisting}
+  \end{exampleblock}
+
+\end{frame}
