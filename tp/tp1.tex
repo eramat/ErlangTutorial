@@ -64,7 +64,7 @@ La génération de code, c'est bien mais maintenant tentons quelque modifications
 de l'application.\\
 
 \textbf{Exercice 1.} Ecrire une fonction
-\textit{inc\_elemnet\_at\_integer\_list}
+\textit{inc\_element\_at\_integer\_list}
 qui ajoute 1 à l'ensemble des éléments
 d'une liste d'entiers. On vérifiera que l'élément de la liste est bien un
 entier. Si ce n'est pas le cas alors il sera supprimé de la liste. La fonction
@@ -72,7 +72,7 @@ sera placée dans un module \textit{util}.
 
 Les tests unitaires suivants doivent passer :
 \begin{lstlisting}[language=erlang]
--module(test).
+-module(test_unit).
 -export([]).
 -import(util, [inc_element_at_integer_list/1]).
 
@@ -93,21 +93,79 @@ inc_4_test() ->
 
 L'exécution des tests est réalisé comme suit :
 \begin{lstlisting}[language=bash]
-1> c(test).
+1> c(test_util).
 {ok,test}
-2> test:test().
-  All 3 tests passed.
+2> test_util:test().
+  All 4 tests passed.
 ok
 \end{lstlisting}
 
 \textbf{Attention !!! La compilation doit être sans aucun warning !}\\
 
-\textbf{Exercice 2.} Ecrire une fonction \textit{insert\_object\_in\_list} qui
+\textbf{Exercice 2.} Développer les 2 fonctions suivantes manipulants des
+listes :
+\begin{itemize}
+\item à partir d'une liste de listes, on construit une liste contenant
+l'ensemble des éléments des sous-listes
+\item à partir d'une liste contenant des listes elle-mêmes pouvant être
+composées de listes, etc \ldots, on construit une liste contenant uniquement
+des éléments simples
+\end{itemize}
+
+Les tests unitaires suivants doivent passer :
+\begin{lstlisting}[language=erlang]
+-module(test_util).
+-export([]).
+-import(util, [concat/1, flatten/1]).
+
+-include_lib("eunit/include/eunit.hrl").
+
+concat_1_test() ->
+?assertEqual(util:concat([]), []).
+
+concat_2_test() ->
+?assertEqual(util:concat([[1,2]]), [1,2]).
+
+concat_3_test() ->
+?assertEqual(util:concat([[1,2,3],[],[4,five]]), [1,2,3,4,five]).
+
+flatten_1_test() ->
+?assertEqual(util:flatten([]), []).
+
+flatten_2_test() ->
+?assertEqual(util:flatten([1,2]), [1,2]).
+
+flatten_3_test() ->
+?assertEqual(util:flatten([[1,[2,[3],[]]],[[[4]]],[5,6]]), [1,2,3,4,5,6]).
+\end{lstlisting}
+
+L'exécution des tests est réalisé comme suit :
+\begin{lstlisting}[language=bash]
+1> c(test_util).
+{ok,test}
+2> test_util:test().
+  All 6 tests passed.
+ok
+\end{lstlisting}
+
+\textbf{Exercice 3.} Ecrire une fonction \textit{insert\_object\_in\_list} qui
 insère un objet définit à l'aide des \textit{records} dans une liste selon
 une politique donnée.
+Le type d'objet que l'on désire utiliser est un rectangle. Un rectangle est
+défini par sa hauteur (\textit{height}) et sa largeur (\textit{width}). La
+politique d'insertion consiste à insérer un nouveau rectangle tel que les
+rectangles de la liste soient toujours rangés dans l'ordre decroissant de
+leur surface. La surface n'est pas un champ du \textit{record}.
+En apportant le miminum de code, développer aussi la politique qui consiste
+à ranger les rectangles dans l'ordre croissant de leur surface.
 
-\textbf{Exercice 3.} Proposez les fonctions suivantes applicables sur un arbre
-binaire représenté par des tuples récursifs.
+a. développer le \textit{record} rectangle ;
+b. développer la politique d'insertion à l'aide d'une fonction anonyme ;
+c. développer la fonction d'insertion.
+
+\textbf{Exercice 4.} Proposez les fonctions suivantes applicables sur un arbre
+binaire représenté par des tuples récursifs. Les feuilles sont des atomes ou
+des numériques.
 
 
 \end{document}

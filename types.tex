@@ -202,6 +202,41 @@ L2 = [ X, Y, { toto, titi }, 3.7 ].
 
 \begin{frame}[fragile]
   \frametitle{Types}
+  \framesubtitle{Liste}
+
+  \begin{block}{Opérateur de concaténation}
+    La manipulation de liste passe souvent par la construction de liste et
+    la construction nécessite souvent la concaténation. Plusieurs solutions :
+    \begin{itemize}
+    \item des fonctions prédéfinies (BIF) comme lists:append
+    \item des fonctions relativement complexes
+    \item l'opérateur ++
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Deux façons de concaténer deux listes}
+    \begin{itemize}
+    \item sous forme d'une fonction :
+      \begin{lstlisting}[language=erlang]
+concat([],L) -> L;
+concat([X|T],L) ->
+    [X|concat(T,L)].
+      \end{lstlisting}
+    \item en utilisant l'opérateur ++
+      \begin{lstlisting}[language=erlang]
+concat(L,[]) -> L;
+concat(L,[H|T]) ->
+   concat(L ++ [H],T).
+      \end{lstlisting}
+    \end{itemize}
+  \end{exampleblock}
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Types}
   \framesubtitle{Booléen}
 
   \begin{block}{Définition}
@@ -250,6 +285,7 @@ io:format("Hello, ~s.~n'', ["Bob"]).
     \begin{itemize}
     \item ~n : retour à la ligne
     \item ~s : remplacé par une chaîne de caractères
+    \item ~w : remplacé par la représentation de la valeur
     \end{itemize}
   \end{alertblock}
 
@@ -320,7 +356,7 @@ Width = R#rectangle.width.
 
   \begin{exampleblock}{Copie de \textit{record}}
     On peut instantier un \textit{record} à partir d'un \textit{record}
-    instantié et modifier l'état du nouvel \textit{record]
+    instantié et modifier l'état du nouvel \textit{record}
     \begin{lstlisting}[language=erlang]
 R = #rectangle{width=10, height=20}.
 R2 = R#rectangle{height=30}.
@@ -336,12 +372,12 @@ R2 = R#rectangle{height=30}.
     Il existe une série de fonctions prédéfinie pour tester le type des
     variables :
     \begin{itemize}
-      \item number(X) : X est un nombre
-      \item integer(X) : X est un entier
-      \item float(X) : X est une réel
-      \item atom(X) : X est un atome
-      \item tuple(X) : X est un tuple
-      \item list(X) : X est une liste
+      \item is\_number(X) : X est un nombre
+      \item is\_integer(X) : X est un entier
+      \item is\_float(X) : X est une réel
+      \item is\_atom(X) : X est un atome
+      \item is\_tuple(X) : X est un tuple
+      \item is\_list(X) : X est une liste
     \end{itemize}
   \end{block}
 
