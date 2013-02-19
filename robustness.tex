@@ -1,0 +1,110 @@
+\section{La robustesse}
+
+\begin{frame}
+  \frametitle{La robustesse}
+  \framesubtitle{Introduction}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+    \item tout peut arriver dans un programme :
+      \begin{itemize}
+      \item échec de calcul,
+      \item paramètre invalide,
+      \item processus mort,
+      \item \ldots
+      \end{itemize}
+    \item il faut pouvoir réagir et traiter ces problèmes
+    \item plusieurs mécanismes :
+      \begin{itemize}
+      \item les timeouts
+      \item la capture des erreurs
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{La robustesse}
+  \framesubtitle{Timeout}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+    \item lorsque l'on rentre dans une phase d'attente de message
+      (\textit{receive}), on est bloqué
+    \item on peut introduire des timeouts pour stopper l'attente (exprimée en
+      ms)
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Exemple}
+    \begin{lstlisting}[language=erlang]
+loop() ->
+  receive
+    Message ->
+      io:format("Message received~n", []),
+      loop()
+    after 5000 ->
+      io:format("Timed out~n", [])
+  end.
+    \end{lstlisting}
+  \end{exampleblock}
+
+  \begin{alertblock}{Bonne pratique}
+    Le délai peut être une fonction.
+  \end{alertblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{La robustesse}
+  \framesubtitle{Capture des erreurs}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+    \item par défaut, un processus erlang se termine par un
+      \textit{exit(normal)}
+    \item si une erreur survient, la fonction \textit{exit} est invoquée avec
+      un atome différent de \textit{normal}
+    \item deux processus peuvent être liés et donc un processus peut savoir si
+      un processus a échoué
+    \item pour prendre en compte les signaux exit dès leur création, il faut
+      déclarer une priorité spéciale : \texttt{process\_flag(trap\_exit, true)}
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{La robustesse}
+  \framesubtitle{Capture des erreurs}
+
+  \begin{exampleblock}{Exemple}
+    \begin{itemize}
+    \item un porcessus se lie à un autre processus et possède une clause
+      conduisant à l'arrêt du processus avec un atome \textit{error}
+    \item dès emission d'un signal \textit{exit}, les processus liés sont
+      avertis
+      \begin{lstlisting}[language=erlang]
+start() ->
+  link(another_processus_Pid).
+
+process([]) ->
+  exit(error).
+      \end{lstlisting}
+    \item en cas d'erreur du premier processus, un signal est envoyé et capturé
+      par un \textit{receive}
+      \begin{lstlisting}[language=erlang]
+loop() ->
+  receive
+    {message, Message} ->
+      io:format("Message received~n", []),
+      loop();
+    {'EXIT', From, Reason} ->
+      io:format("Exit: ~p~n", [{'EXIT', From, Reason}])
+    end.
+      \end{lstlisting}
+    \end{itemize}
+  \end{exampleblock}
+
+\end{frame}

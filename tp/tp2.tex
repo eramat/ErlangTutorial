@@ -1,0 +1,62 @@
+\documentclass[11pt,a4paper,oneside]{article}
+\usepackage{listings}
+%\usepackage{ucs}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{txfonts}
+\usepackage{lmodern}
+\usepackage[pdftex]{thumbpdf}
+\usepackage[citecolor={purple},linkcolor={blue},urlcolor={blue},
+   a4paper,colorlinks,breaklinks]{hyperref}
+\usepackage{txfonts}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{graphicx}
+
+\graphicspath{{../figures/}}
+
+\renewcommand\familydefault{\sfdefault}
+
+\usepackage{vmargin}
+\setmarginsrb{3.3cm}{2cm}{1cm}{1cm}{1cm}{1cm}{0.5cm}{0.5cm}
+
+%% \usepackage{fullpage}
+\usepackage{color}
+\usepackage{url}
+\usepackage[french]{babel}
+\usepackage{listings}
+
+\author{Eric Ramat\\\url{ramat@lisic.univ-littoral.fr}}
+\title{\textbf{\textbf{TP Introduction à Erlang}}\\
+\emph{Programmation concurrente}}
+\newcommand{\orangeline}{\rule{\linewidth}{1mm}}
+
+\lstset{language=C++,extendedchars=true,inputencoding=latin1,
+    basicstyle=\ttfamily\small, commentstyle=\ttfamily\color{red},
+      showstringspaces=false,basicstyle=\ttfamily\small}
+
+
+\newcommand{\background}{
+\setlength{\unitlength}{1in}
+\begin{picture}(0,0)
+ \put(-1.4,-7.45){\includegraphics[height=28.7cm]{background2}}
+\end{picture}}
+
+\begin{document}
+\maketitle
+\background
+
+\begin{flushright}
+  Durée : 5 heures\end{flushright}
+
+\noindent\orangeline
+
+L'objectif de ce TP est de comprendre la programation en Erlang en mode
+concurrente. Nous aborderons les notions de processus, de communication
+asynchrone et de distribution.
+
+\section{Travail}
+
+\textbf{Exercice 1.}
+
+\end{document}

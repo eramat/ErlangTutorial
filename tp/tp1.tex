@@ -58,21 +58,91 @@ des exercices.
 
 \section{Travail}
 
-\subsection{Etape 1 : }
+\textbf{Exercice 1.} Proposez les fonctions suivantes applicables sur un arbre
+binaire représenté par des tuples récursifs. Les feuilles sont des atomes ou
+des numériques :
+\begin{itemize}
+\item calculer le nombre de noeuds (feuilles incluses)
+\item calculer le nombre de feuilles
+\item afficher la liste des feuilles ; un paramètre doit peut être de dire si
+  les feuilles de gauche seront affichées avant les feuilles de droite ou
+  inversement
+\end{itemize}
+Les fonctions seront définies dans le module \textit{binary\_tree}.
 
-La génération de code, c'est bien mais maintenant tentons quelque modifications
-de l'application.\\
+Les tests unitaires suivants doivent passer :
+\begin{lstlisting}[language=erlang]
+-module(test_binary_tree).
+-export([]).
+-import(binary_tree, [count_node/1,count_leaf/1,print_leaf/1]).
 
-\textbf{Exercice 1.} Ecrire une fonction
+-include_lib("eunit/include/eunit.hrl").
+
+binary_tree_1_test() ->
+    ?assertEqual(binary_tree:count_node({{a,b},{c,d}}), 7).
+
+binary_tree_2_test() ->
+    ?assertEqual(binary_tree:count_node({}), 1).
+
+binary_tree_3_test() ->
+    ?assertEqual(binary_tree:count_leaf({{a,b},{c,d}}), 4).
+
+binary_tree_4_test() ->
+    ?assertEqual(binary_tree:count_leaf({}), 0).
+\end{lstlisting}
+
+L'exécution des tests est réalisé comme suit :
+\begin{lstlisting}[language=bash]
+1> c(test_binary_tree).
+{ok,test_binary_tree}
+2> test_binary_test:test().
+  All 4 tests passed.
+ok
+\end{lstlisting}
+
+Modifier la définition des noeuds (sauf les feuilles) en ajoutant une
+information définie à l'aide d'un atome.
+
+Les tests unitaires suivants doivent passer :
+\begin{lstlisting}[language=erlang]
+-module(test_binary_tree2).
+-export([]).
+-import(binary_tree2, [count_node/1,count_leaf/1,print_leaf/1]).
+
+-include_lib("eunit/include/eunit.hrl").
+
+binary_tree_1_test() ->
+    ?assertEqual(binary_tree2:count_node({x, {y, {a} ,{b}},{z, {c}, {d}}}), 7).
+
+binary_tree_2_test() ->
+    ?assertEqual(binary_tree2:count_node({}), 1).
+
+binary_tree_3_test() ->
+    ?assertEqual(binary_tree2:count_leaf({x, {y, {a} ,{b}},{z, {c}, {d}}}), 4).
+
+binary_tree_4_test() ->
+    ?assertEqual(binary_tree2:count_leaf({}), 0).
+\end{lstlisting}
+
+L'exécution des tests est réalisé comme suit :
+\begin{lstlisting}[language=bash]
+1> c(test_binary_tree2).
+{ok,test_binary_tree2}
+2> test_binary_test2:test().
+  All 4 tests passed.
+ok
+\end{lstlisting}
+
+\textbf{Exercice 2.} Ecrire une fonction
 \textit{inc\_element\_at\_integer\_list}
-qui ajoute 1 à l'ensemble des éléments
+qui ajoute 1 à chaque élément
 d'une liste d'entiers. On vérifiera que l'élément de la liste est bien un
 entier. Si ce n'est pas le cas alors il sera supprimé de la liste. La fonction
 sera placée dans un module \textit{util}.
 
 Les tests unitaires suivants doivent passer :
 \begin{lstlisting}[language=erlang]
--module(test_unit).
+-module(test_util).
 -export([]).
 -import(util, [inc_element_at_integer_list/1]).
 
@@ -94,7 +164,7 @@ inc_4_test() ->
 L'exécution des tests est réalisé comme suit :
 \begin{lstlisting}[language=bash]
 1> c(test_util).
-{ok,test}
+{ok,test_util}
 2> test_util:test().
   All 4 tests passed.
 ok
@@ -102,7 +172,7 @@ ok
 
 \textbf{Attention !!! La compilation doit être sans aucun warning !}\\
 
-\textbf{Exercice 2.} Développer les 2 fonctions suivantes manipulants des
+\textbf{Exercice 3.} Développer les 2 fonctions suivantes manipulants des
 listes :
 \begin{itemize}
 \item à partir d'une liste de listes, on construit une liste contenant
@@ -142,13 +212,13 @@ flatten_3_test() ->
 L'exécution des tests est réalisé comme suit :
 \begin{lstlisting}[language=bash]
 1> c(test_util).
-{ok,test}
+{ok,test_util}
 2> test_util:test().
   All 6 tests passed.
 ok
 \end{lstlisting}
 
-\textbf{Exercice 3.} Ecrire une fonction \textit{insert\_object\_in\_list} qui
+\textbf{Exercice 4.} Ecrire une fonction \textit{insert\_object\_in\_list} qui
 insère un objet définit à l'aide des \textit{records} dans une liste selon
 une politique donnée.
 Le type d'objet que l'on désire utiliser est un rectangle. Un rectangle est
@@ -163,9 +233,66 @@ a. développer le \textit{record} rectangle ;
 b. développer la politique d'insertion à l'aide d'une fonction anonyme ;
 c. développer la fonction d'insertion.
 
-\textbf{Exercice 4.} Proposez les fonctions suivantes applicables sur un arbre
-binaire représenté par des tuples récursifs. Les feuilles sont des atomes ou
-des numériques.
+\begin{lstlisting}[language=erlang]
+-module(test_insert).
+-export([]).
+-import(insert, [insert_object_in_list/3]).
 
+-include_lib("eunit/include/eunit.hrl").
+
+-include("rectangle.hrl").
+
+inc_1_test() ->
+    Policy = fun(X, Y) -> if X > Y -> true; true -> false end end,
+    R = #rectangle{width=10, height=20, color=black},
+    ?assertEqual(insert:insert_object_in_list(R, [], Policy),
+		 [#rectangle{width=10, height=20, color=black}]).
+
+inc_2_test() ->
+    Policy = fun(X, Y) -> if X > Y -> true; true -> false end end,
+    R = 1,
+    ?assertEqual(insert:insert_object_in_list(R, [], Policy),
+		 {error, no_record}).
+
+inc_3_test() ->
+    Policy = 1,
+    R = #rectangle{width=10, height=20, color=black},
+    ?assertEqual(insert:insert_object_in_list(R, [], Policy),
+		 {error, no_record}).
+
+inc_4_test() ->
+    Policy = fun(X, Y) -> if X > Y -> true; true -> false end end,
+    R = #rectangle{width=10, height=20, color=black},
+    ?assertEqual(insert:insert_object_in_list(R, 0, Policy),
+		 {error, no_record}).
+
+inc_5_test() ->
+    Policy = fun(X, Y) -> if X > Y -> true; true -> false end end,
+    R = #rectangle{width=10, height=20, color=black},
+    ?assertEqual(insert:insert_object_in_list(
+		   R,
+		   [
+		    #rectangle{width=5, height=10, color=black},
+		    #rectangle{width=10, height=10, color=black},
+		    #rectangle{width=20, height=30, color=black}
+		   ],
+		   Policy),
+		 [
+		  #rectangle{width=5, height=10, color=black},
+		  #rectangle{width=10, height=10, color=black},
+		  #rectangle{width=10, height=20, color=black},
+		  #rectangle{width=20, height=30, color=black}
+		 ]).
+
+\end{lstlisting}
+
+L'exécution des tests est réalisé comme suit :
+\begin{lstlisting}[language=bash]
+1> c(test_insert).
+{ok,test_insert}
+2> test_insert:test().
+  All 5 tests passed.
+ok
+\end{lstlisting}
 
 \end{document}

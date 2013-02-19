@@ -27,47 +27,199 @@
 
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Programmation concurrente}
   \framesubtitle{Création des processus}
 
   \begin{block}{Définition}
     \begin{itemize}
-    \item
+    \item les processus sont créés par la fonction BIF \textit{spawn}
+      \begin{lstlisting}[language=erlang]
+spawn(Module, Fonction, Parametres)
+      \end{lstlisting}
+    \item les paramètres sont représentés par une liste
+    \item la fonction \textit{spawn} retourne le \textit{pid} (\textit{
+      Process Identifier}) du processus
     \end{itemize}
   \end{block}
 
   \begin{exampleblock}{Exemples}
+    \begin{itemize}
+    \item lancement d'un serveur défini dans le module \textit{my\_server} via
+      la fonction \textit{start} avec un seul paramètre entier 8081 :
+      \begin{lstlisting}[language=erlang]
+Pid1 = spawn(my_server, start, [8081]).
+      \end{lstlisting}
+    \item lancement d'une fonction anonyme dans un processus :
+      \begin{lstlisting}[language=erlang]
+Pid2 = spawn(fun() -> 2 * 2 end).
+      \end{lstlisting}
+    \end{itemize}
   \end{exampleblock}
 
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Programmation concurrente}
   \framesubtitle{Envoi de messages}
 
   \begin{block}{Définition}
     \begin{itemize}
-    \item
+    \item chaque processus a une file d'attente de messages
+    \item cette file d'attente est de type FIFO (\textit{First In Firt Out})
+    \item la syntaxe d'envoi est très simple :
+      \begin{lstlisting}[language=erlang]
+Pid ! Message
+      \end{lstlisting}
+    \item le message peut être un atome, une liste, un tuple, un entier, \ldots
+    \item par convention, s'il y a des données dans le message, on utilise
+      un tuple dont le premier élément est un atome représentant le type
+      du message
+    \item pour envoyer un message à un processus, il faut connaître son pid
     \end{itemize}
   \end{block}
 
   \begin{exampleblock}{Exemples}
+    \begin{lstlisting}[language=erlang]
+Pid ! start.
+Pid ! {check, 3}.
+    \end{lstlisting}
   \end{exampleblock}
 
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Programmation concurrente}
   \framesubtitle{Réception des messages}
 
   \begin{block}{Définition}
     \begin{itemize}
-    \item
+    \item la réception des messages par un processus se fait via un bloc
+      \textit{receive}
+    \item un bloc \textit{receive} est une sorte de \textit{case} :
+      \begin{lstlisting}[language=erlang]
+receive
+  pattern1 ->
+    actions1;
+  pattern2 ->
+    actions2;
+  ...
+  patternN
+    actionsN
+end.
+      \end{lstlisting}
+    \item à la réception d'un message, le message est unifié avec le premier
+      \textit{pattern} valide et l'action est réalisée
     \end{itemize}
   \end{block}
 
-  \begin{exampleblock}{Exemples}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Programmation concurrente}
+  \framesubtitle{Réception des messages}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+    \item en général, le bloc \textit{receive} est défini dans une fonction
+      récursivement infinie
+    \item le \textit{receive} est bloquant
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Exemple}
+      \begin{lstlisting}[language=erlang]
+loop() ->
+  receive
+    start ->
+      % do something
+      loop();
+    {check, X} ->
+      % do something
+      loop();
+    finish ->
+      ok
+  end.
+      \end{lstlisting}
+  \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Programmation concurrente}
+  \framesubtitle{Messages}
+
+  \begin{block}{Asynchrone}
+    \begin{itemize}
+    \item par défaut, les messages sont asynchrones :
+      \begin{itemize}
+      \item le message est envoyé par un processus vers un autre processus
+      \item il est traité dans le recepteur dès qu'il a le temps
+      \item aucune réponse n'est retournée par l'opérateur !
+    \end{itemize}
+    \item par défaut, le récepteur ne connait pas l'expéditeur
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Programmation concurrente}
+  \framesubtitle{Messages}
+
+  \begin{exampleblock}{Comment implémenter des messages synchrones ?}
+    \begin{itemize}
+    \item en plaçant dans le message le pid de l'expéditeur via la fonction
+      \textit{self} :
+      \begin{lstlisting}[language=erlang]
+Pid ! { self(), check, 3 },
+receive
+  Response ->
+    Response
+  end.
+      \end{lstlisting}
+    \item du côté du récepteur :
+      \begin{lstlisting}[language=erlang]
+loop() ->
+  receive
+    start ->
+      % do something
+      loop();
+    {Pid, check, X} ->
+      % do something
+      Pid ! ok,
+      loop();
+    finish ->
+      ok
+  end.
+      \end{lstlisting}
+    \end{itemize}
+  \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Programmation concurrente}
+  \framesubtitle{Processus nommé}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+    \item au lieu d'ajouter le pid dans le message, il est possible
+      d'enregistrer un processus et d'utiliser le nommage lors d'un envoi
+      de message
+    \item la fonction \textit{register} est utilisée :
+      \begin{lstlisting}[language=erlang]
+register(some_atom, Pid)
+      \end{lstlisting}
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Exemple}
+    \begin{lstlisting}[language=erlang]
+register(my_process, spawn(my_module, my_function, [])).
+...
+my_process ! message
+    \end{lstlisting}
   \end{exampleblock}
 
 \end{frame}

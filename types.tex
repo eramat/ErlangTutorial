@@ -285,7 +285,10 @@ io:format("Hello, ~s.~n'', ["Bob"]).
     \begin{itemize}
     \item ~n : retour à la ligne
     \item ~s : remplacé par une chaîne de caractères
-    \item ~w : remplacé par la représentation de la valeur
+    \item ~p : remplacé par la représentation standard de la donnée
+    \item ~w : remplacé par la représentation de la valeur et si la longueur
+      de la représentation est trop longue, elle est coupée par des retours
+      à la ligne
     \end{itemize}
   \end{alertblock}
 

@@ -1,0 +1,81 @@
+\section{Multilangage}
+
+\begin{frame}[fragile]
+  \frametitle{Multilangage}
+  \framesubtitle{Introduction}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+    \item Erlang permet de définir des mécanismes de haut niveau : multitâche,
+      distribué, \ldots
+    \item Erlang n'est pas fait pour faire du calcul scientifique, par exemple
+    \item il est donc intéressant de pouvoir ``communiquer'' avec du code
+      non-Erlang
+    \item le mécanisme propose se nomme : \textit{port}
+    \item l'objet externe est vu comme un processus Erlang avec lequel on
+      peut communiquer
+    \item l'objet reçoit des messages et peut en envoyer au code Erlang
+    \item l'objet est un exécutable
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Multilangage}
+  \framesubtitle{Port}
+
+  \begin{exampleblock}{Communications avec un port}
+    Seulement 3 types de message sont compris par un port :
+    \begin{itemize}
+    \item envoi d'une trame d'octets Data à l'objet
+      \begin{lstlisting}[language=erlang]
+Port ! {PidC, {command, Data}}
+      \end{lstlisting}
+    \item change le processus connecté au port
+      \begin{lstlisting}[language=erlang]
+Port ! {PidC, {connect, Pid1}}
+      \end{lstlisting}
+    \item fermeture de la connexion avec l'objet
+      \begin{lstlisting}[language=erlang]
+Port ! {PidC, close}
+      \end{lstlisting}
+    \end{itemize}
+  \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Multilangage}
+  \framesubtitle{Port}
+
+  \begin{block}{Création}
+    La fonction principale de création d'un port est
+    \textit{open\_port(PortName, PortSettings)} où :
+    \begin{itemize}
+    \item \textit{PortName} peut être \textit{{spawn, Command}}, Command est
+      alors un programme exécutable lancé dans un processus
+    \item \textit{PortSettings} décrit le mécanisme de communication :
+      \begin{itemize}
+      \item \textit{use\_stdio} : utilise les entrée-sorties standards
+      \item \textit{binary} : les échanges sont en binaire (dans ce cas, il
+        existe des fonctions BIF pour faire les conversions)
+      \item \textit{{packet, N}} : chaque message est une liste d'entiers
+        précédée par la taille de la liste codée sur N octets (avec N = 1, 2
+        ou 4)
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Multilangage}
+  \framesubtitle{\textit{Linked-in Driver}}
+
+  \begin{alertblock}{Définition}
+    Il est possible de lier de manière plus intime du code non-erlang
+    avec la machine virtuelle Erlang : les \textit{Linked-in Drivers}
+  \end{alertblock}
+
+\end{frame}

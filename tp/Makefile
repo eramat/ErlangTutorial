@@ -5,12 +5,17 @@ FILE=$(BASEDIR)-$(DATE).tar.bz2
 
 all: pdf
 
-pdf: tp1
+pdf: tp1 tp2
 
 tp1: tp1.tex
 	pdflatex tp1.tex
 	pdflatex tp1.tex
 	pdflatex tp1.tex
+
+tp2: tp2.tex
+	pdflatex tp2.tex
+	pdflatex tp2.tex
+	pdflatex tp2.tex
 
 clean: cleantex
 

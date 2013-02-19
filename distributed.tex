@@ -1,0 +1,182 @@
+\section{Programmation distribuée}
+
+\begin{frame}[fragile]
+  \frametitle{Programmation distribuée}
+  \framesubtitle{Introduction}
+
+  \begin{block}{Pourquoi ?}
+    \begin{itemize}
+    \item la vitesse : découper une application en plusieurs parties exécutées
+      sur des machines ou processeurs ou coeurs différents (on parlera de noeud)
+    \item la tolérance aux fautes : augmenter la résistance aux pannes en
+      faisant coopérer plusieurs noeuds qui peuvent potentiellement tomber en
+      panne (possibilité de redondance)
+    \item accessibilité aux ressources : certains services ne sont disponibles
+      que sur certains matériels spécifiques (une base de données, par exemple)
+    \item extensibilité : pouvoir ajouter des noeuds supplémentaires pour
+      augmenter la capacité du système
+    \item certaines applications sont intrinsèquement distribuées (système
+      de chat irc, par exemple)
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Programmation distribuée}
+  \framesubtitle{Introduction}
+
+  \begin{block}{Définition}
+    \begin{itemize}
+    \item la programmation distribuée en Erlang consiste à déployer une
+      application sur plusieurs machines
+    \item les processus sont alors distants
+    \item Erlang offre un mécanisme simple de sécurité basé sur les cookies
+    \end{itemize}
+  \end{block}
+
+  \begin{alertblock}{Les fonctions BIF}
+    \begin{itemize}
+    \item \textit{spawn(Node, Module, Function, Args)} : création d'un
+      processus sur un noeud distant
+    \item \textit{monitor\_node(Node, Flag)} : vérification du bon
+      fonctionnement du noeud
+    \item \textit{node()} et \textit{nodes()} : nom du noeud courant et des
+      noeuds communs
+    \item \textit{node(Pid)} : nom du noeud où le processus identifié par Pid
+      est exécuté
+    \item \textit{disconnect\_node(Nodename)} : suppression de la connexion
+      du noeud courant vers le noeud \textit{Nodename}
+    \end{itemize}
+  \end{alertblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Programmation distribuée}
+  \framesubtitle{Sécurité}
+
+  \begin{block}{Authentification}
+    \begin{itemize}
+    \item lors de la communication entre 2 noeuds, un atome (le cookie) est
+      échangé afin de vérifier l'authentification de l'expéditeur
+    \item chaque noeud possède son propre atome (secret)
+    \item par défaut, l'atome vaut \textit{nocookie} ; la fonction
+      \textit{erlang:get\_cookie()} permet de le connaître
+    \item \textit{erlang:set\_cookie(Node,Cookie)} définit le cookie du noeud
+      courant (Node = node()) ou tente de définir le cookie d'un noeud distant
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Programmation distribuée}
+
+  \begin{block}{Nommage des machines}
+    \begin{itemize}
+    \item afin de communiquer entre machines, il est nécessaire de nommer les
+      machines
+    \item on parlera de noeud (\textit{node})
+    \item ce nommage est fait lors du lancement de la machine virtuelle
+      Erlang
+    \item deux possibilités :
+      \begin{itemize}
+      \item -sname xxxx : la machine appartient à un seul domaine ; on peut
+        désigner une machine par un simple nom (sous Linux, on se base sur
+        les fichiers hostname et hosts)
+      \item -name xxxx : les machines ont besoin d'un adressage complet
+        nécessitant un DNS
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Exemple}
+    \begin{lstlisting}[language=bash]
+eric@UltraMars:~> erl -sname node1
+Erlang R15B01 (erts-5.9.1) [source] [smp:2:2] [async-threads:0] [kernel-poll:false]
+
+Eshell V5.9.1  (abort with ^G)
+(node1@UltraMars)1>
+    \end{lstlisting}
+  \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Programmation distribuée}
+
+  \begin{block}{Envoi de messages}
+    \begin{itemize}
+    \item un message est maintenant envoyé à un processus appartenant à un
+      autre noeud
+    \item l'un des processus doit être enregistré afin d'amorcer la
+      communication
+      \begin{lstlisting}[language=erlang]
+{Named_processus, Named_Node} ! Message
+      \end{lstlisting}
+    \item l'envoi de messages peut aussi se faire de manière classique
+    \item on peut connaître le nom d'un noeud via la fonction BIF \textit{node}
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Exemple}
+    \begin{lstlisting}[language=erlang]
+{my_processus, node1@UltraMars} ! Message
+    \end{lstlisting}
+  \end{exampleblock}
+
+  \begin{alertblock}{Lancement à distance}
+    On peut lancer un processus sur un autre noeud :
+    \begin{lstlisting}[language=erlang]
+spawn(Node, Module, Function, Parameters).
+    \end{lstlisting}
+  \end{alertblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Programmation distribuée}
+
+  \begin{block}{Monitoring}
+    Le test de fonctionnement se fait en 3 temps :
+    \begin{itemize}
+    \item déclaration du monitoring
+    \item attente de l'état
+    \item réception de la réponse : si on reçoit le tuple {nodedown, Node}
+      alors le noeud n'est pas actif
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Exemple}
+    \begin{lstlisting}[language=erlang]
+monitor_node(Node, true),
+receive
+  {nodedown, Node} ->
+  ...
+end,
+    \end{lstlisting}
+  \end{exampleblock}
+
+  \begin{block}{Fin du monitoring}
+    On peut désactiver le monitoring en faisant appel à \textit{monitor\_node}
+    avec l'atome false en deuxième paramètre.
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Programmation distribuée}
+
+  \begin{block}{Connexion / deconnexion}
+    \begin{itemize}
+    \item un noeud N1 est connecté à un noeud N2, dès qu'une fonction
+      invoquée par N1 mentionne N2
+    \item au démarrage, la fonction \textit{nodes()} retourne la liste vide
+    \item la fonction \textit{disconnect\_node} peut être utilisée pour
+      supprimer le lien de connexion avec un noeud
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
