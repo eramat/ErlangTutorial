@@ -1,0 +1,4 @@
+-define(BoardWidth, 700).
+-define(BoardHeight, 700).
+-define(TileWidth, 100).
+-define(TileHeight, 100).
