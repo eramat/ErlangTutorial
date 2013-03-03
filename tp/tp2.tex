@@ -53,10 +53,96 @@
 
 L'objectif de ce TP est de comprendre la programation en Erlang en mode
 concurrente. Nous aborderons les notions de processus, de communication
-asynchrone et de distribution.
+asynchrone et de distribution.\\
+
+Afin d'illustrer ces notions, nous allons nous intéresser à la programmation de
+jeu multi-joueurs distribués. Le jeu abordé va être très simple : c'est Invers
+de Kris Burm. En voici les règles :
+\begin{itemize}
+\item le plateau est carré et est composé 6 cases sur 6 cases
+\item il y a 38 tuiles (19 jaunes et 19 rouges) avec une face toute colorée et
+  l'autre face avec un petit point au centre
+\item au début de la partie, on place les tuiles sur le plateau, face colorée
+visible (les tuiles sont posées alternativement, comme les cases d'un échiquier)
+\item chaque joueur possède alors encore une tuile de sa couleur en main
+\item chacun son tour, un joueur introduit la tuile qu'il a en main, face avec
+  le point visible, sur le plateau via une ligne ou une colonne, et récupère la
+  tuile qu'il éjecte de l'autre coté
+\item c'est cette tuile qu'il sera réintroduit en jeu lors de son prochain tour
+\item on peut éjecter tout type de tuile \textbf{à l'exception} des tuiles
+  adverses qui ont déjà été retournés (face avec le point visible)
+\item le premier joueur qui parvient à retourner tous ses tuiles remporte la
+  partie.
+\end{itemize}
+
+\begin{center}
+\includegraphics[width=10cm]{invers}
+
+\title{Une vue du plateau de jeu}
+\end{center}
+
+Le code de l'interface graphique est fourni. Il permet de visualiser les coups
+réalisés par les joueurs, d'indiquer les coups réalisés et la tuile utilisable
+par le joueur.
 
 \section{Travail}
 
+L'architecture est la suivante :
+\begin{itemize}
+\item un serveur qui gère la partie en cours entre 2 joueurs
+\item deux clients connectés au serveur
+\end{itemize}
+Pour les tests, les 3 processus peuvent être lancés sur la même machine mais
+ils doivent impérativement lancés comme des processus Erlang.\\
+
+Le serveur et les clients interagissent suivant un protocole précis :
+\begin{itemize}
+\item les clients doivent ensuite envoyé un atome \textit{start} pour indiquer
+  qu'ils sont prêts à démarrer ;
+\item quand les deux joueurs sont prêts alors le serveur envoie, à chaque
+  joueur, une trame composée d'un \textit{tuple} composé d'un atome \textit{go}
+  et de la couleur (\textit{red} ou \textit{yellow}) du joueur (le joueur
+  rouge commence) ; le serveur désigne le joueur connecté en premier comme
+  le rouge ;
+\item le client élabore son coup et créé une trame (un \textit{tuple}) de la
+  forme suivante :
+  \begin{itemize}
+  \item l'atome \textit{play} (pour dire je joue)
+  \item le numéro de ligne ou de colonne où l'on veut placer sa tuile
+  \item un atome parmi \textit{left}, \textit{right}, \textit{bottom} et
+    \textit{top} pour indiquer l'endroit où est placé la tuile
+  \item la couleur de la tuile placée (\textit{yellow} ou \textit{red})
+  \end{itemize}
+\item le serveur répond au joueur qui vient de jouer par une trame composée
+  d'un seul atome égal à :
+  \begin{itemize}
+  \item \textit{win}
+  \item \textit{lost}
+  \item \textit{invalid} pour indiquer que le coup est invalide (la partie est
+    alors stoppée)
+  \item \textit{yellow} pour indiquer qu'une tuile jaune est sortie du jeu
+  \item \textit{red} pour indiquer qu'une tuile rouge est sortie du jeu
+  \end{itemize}
+\item le serveur envoie une trame composée de 5 éléments au joueur qui n'a pas
+  joué ; cette trame est composée de la trame envoyée par le joueur qui a joué
+  et de l'atome \textit{yellow} ou \textit{red} (la couleur de la tuile sortie)
+  ; si le coup n'était pas valide, l'autre joueur reçoit \textit{invalid} ;
+  s'il a gagné ou perdu, il reçoit \textit{win} ou \textit{lost} ;
+\end{itemize}
+
+Les lignes sont numérotées de 1 à 6 et les colonnes sont étiquetées de A à F.\\
+
+Vous disposez du code d'une application qui permet de jouer à l'invers via
+une interface graphique. Les joueurs jouent chacun leur tour.\\
+
 \textbf{Exercice 1.}
+
+Ecrire la partie communication entre les processus client et serveur. Respecter
+le protocole défini précédemment. Pour le client, il suffit d'adapter le code
+du fichier \textit{gui.erl}.
+
+\textbf{Exercice 2.}
+
+Généraliser le serveur afin qu'il gère simultanément plusieurs parties.
 
 \end{document}
