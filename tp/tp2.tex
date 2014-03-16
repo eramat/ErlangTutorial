@@ -47,13 +47,37 @@
 \background
 
 \begin{flushright}
-  Durée : 5 heures\end{flushright}
+  Durée : 4,5 heures + mini-projet\end{flushright}
 
 \noindent\orangeline
 
 L'objectif de ce TP est de comprendre la programation en Erlang en mode
 concurrente. Nous aborderons les notions de processus, de communication
 asynchrone et de distribution.\\
+
+\section{Partie 1}
+
+\textbf{Exercice 1.}
+~\\
+Écrire une fonction qui démarre N processus connectés en anneau (le processus i
+connaît seulement le processus i+1 et le processus N connaît le processus 1).
+Chaque processus doit envoyer un message M fois à l'ensemble des processus.
+Par conséquent, chaque processus doit recevoir M x (N-1) messages. Après
+l'envoi des messages et la réception, tous les processus doivent se terminer
+proprement. M et N sont des paramètres de la fonction de démarrage.\\
+
+\textbf{Exercice 2.}
+~\\
+Au lieu d'un anneau, le réseau de connexions entre les processus est de type
+Maître/Esclave. Un processus particulier, nommé Maître, lance tous les
+processus esclaves. Les processus esclaves envoient M fois le même message à
+l'ensemble des processus esclaves. Les messages vont transiter par le processus
+maître puisque les processus esclaves ne se connaissent pas. Lorsque tous les
+processus esclaves ont envoyés leurs messages et ont reçu les messages des
+autres processus, le processus maître demande la terminaison des processus
+esclaves avant de s'arrêter lui-même.\\
+
+\section{Partie 2}
 
 Afin d'illustrer ces notions, nous allons nous intéresser à la programmation de
 jeu multi-joueurs distribués. Le jeu abordé va être très simple : c'est Invers
@@ -85,7 +109,7 @@ Le code de l'interface graphique est fourni. Il permet de visualiser les coups
 réalisés par les joueurs, d'indiquer les coups réalisés et la tuile utilisable
 par le joueur.
 
-\section{Travail}
+\subsection{Travail}
 
 L'architecture est la suivante :
 \begin{itemize}
@@ -136,13 +160,13 @@ Vous disposez du code d'une application qui permet de jouer à l'invers via
 une interface graphique. Les joueurs jouent chacun leur tour.\\
 
 \textbf{Exercice 1.}
-
+~\\
 Ecrire la partie communication entre les processus client et serveur. Respecter
 le protocole défini précédemment. Pour le client, il suffit d'adapter le code
-du fichier \textit{gui.erl}.
+du fichier \textit{gui.erl}.\\
 
 \textbf{Exercice 2.}
-
+~\\
 Généraliser le serveur afin qu'il gère simultanément plusieurs parties.
 
 \end{document}

@@ -1,7 +1,7 @@
 -module(draw).
 -author('eric.ramat@gmail.com').
 
--export([draw/4, draw_board/3, show_player/2]).
+-export([draw/4, draw_board/3, invalid_buttons/1, show_player/2]).
 
 -import(state, [is_reverse/1]).
 
@@ -15,6 +15,18 @@ state_to_color(yellow_reverse) ->
     yellow;
 state_to_color(red_reverse) ->
     red.
+
+invalid_buttons([Button|T]) ->
+    gs:config(Button, [{enable, false}]),
+    invalid_buttons(T);
+invalid_buttons([]) ->
+    true.
+
+valid_buttons([Button|T]) ->
+    gs:config(Button, [{enable, true}]),
+    invalid_buttons(T);
+valid_buttons([]) ->
+    true.
 
 draw_button(Win, X, Y, Text, Data) ->
     gs:create(button, Win, [{label, {text, Text}},
